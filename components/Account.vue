@@ -3,22 +3,22 @@ const supabase = useSupabaseClient()
 
 const loading = ref(true)
 const username = ref('')
-const website = ref('')
-const avatar_path = ref('')
+const email = ref('')
+const canvasKey = ref('')
 
 loading.value = true
 const user = useSupabaseUser()
 
 let { data } = await supabase
   .from('profiles')
-  .select(`username, website, avatar_url`)
+  .select(`username, email, canvasKey`)
   .eq('id', user.value.id)
   .single()
 
 if (data) {
   username.value = data.username
-  website.value = data.website
-  avatar_path.value = data.avatar_url
+  email.value = data.email
+  canvasKey.value = data.canvasKey
 }
 
 loading.value = false
@@ -31,8 +31,7 @@ async function updateProfile() {
     const updates = {
       id: user.value.id,
       username: username.value,
-      website: website.value,
-      avatar_url: avatar_path.value,
+      canvasKey: canvasKey.value,
       updated_at: new Date(),
     }
 
@@ -44,6 +43,7 @@ async function updateProfile() {
     alert(error.message)
   } finally {
     loading.value = false
+    this.$router.push({ path: 'pages/default.html' });
   }
 }
 
@@ -72,8 +72,8 @@ async function signOut() {
       <input id="username" type="text" v-model="username" />
     </div>
     <div>
-      <label for="website">Website</label>
-      <input id="website" type="url" v-model="website" />
+      <label for="canvasKey">Your Canvas API Key</label>
+      <input id="canvasKey" type="text" v-model="canvasKey" />
     </div>
 
     <div>
