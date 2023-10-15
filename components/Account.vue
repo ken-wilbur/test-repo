@@ -39,11 +39,11 @@ async function updateProfile() {
       returning: 'minimal', // Don't return the value after inserting
     })
     if (error) throw error
+    this.$router.push('pages/default.vue')
   } catch (error) {
     alert(error.message)
   } finally {
     loading.value = false
-    this.$router.push({ path: 'pages/default.html' });
   }
 }
 
